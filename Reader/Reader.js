@@ -36,6 +36,11 @@ var Reader = function(g){
       return new Reader(f(r));
     });
   }
+
+  this.functor = true;
+  this.applicative = true;
+  this.monad = true;
+  this.type = 'Reader';
 }
 
 module.exports = Reader;

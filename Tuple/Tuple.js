@@ -19,6 +19,11 @@ var Tuple = function(a, b){
   this.bind = function(f){
     return f(b);
   };
+
+  this.functor = true;
+  this.applicative = true;
+  this.monad = true;
+  this.type = 'Tuple';
 }
 
 module.exports = Tuple;

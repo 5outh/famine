@@ -2,7 +2,8 @@
 var Monoid = function(mempty, mappend){
   return {
     mempty : mempty,
-    mappend : mappend
+    mappend : mappend,
+    monoid : true
   }
 }
 

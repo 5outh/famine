@@ -33,6 +33,11 @@ var List = function(vals){
     }
     return new List(ret);
   }
+
+  this.functor = true;
+  this.applicative = true;
+  this.monad = true;
+  this.type = 'List';
 }
 
 module.exports = List

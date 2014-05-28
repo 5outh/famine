@@ -29,6 +29,11 @@ var Writer = function(w, log, val){
   this.tell = function(phrase){
     return new Writer(this.monoid, this.monoid.mappend(this.log, phrase), this.val);
   }
+
+  this.functor = true;
+  this.applicative = true;
+  this.monad = true;
+  this.type = 'Writer';
 }
 
 module.exports = Writer;

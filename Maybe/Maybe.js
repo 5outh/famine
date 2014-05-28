@@ -10,7 +10,11 @@ var Nothing = {
   },
   bind : bind = function(f){
     return Nothing;
-  }
+  }, 
+  functor : true, 
+  applicative : true,
+  monad : true,
+  type : 'Maybe'
 };
 
 var Just = function(val){
@@ -38,6 +42,11 @@ var Just = function(val){
   this.bind = function(f) {
     return f(val);
   }
+
+  this.functor = true;
+  this.applicative = true;
+  this.monad = true;
+  this.type = 'Maybe';
 }
 
 module.exports = {

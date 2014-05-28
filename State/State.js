@@ -42,6 +42,11 @@ var State = function(f){
       }
     });
   }
+
+  this.functor = true;
+  this.applicative = true;
+  this.monad = true;
+  this.type = 'State';
 }
 
 module.exports = State;
