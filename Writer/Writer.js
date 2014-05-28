@@ -3,6 +3,11 @@ var Monoid = require('../Monoid/Monoid'),
 
 // Writer w a = Writer { runWriter :: (a, w) }  
 var Writer = function(w, log, val){
+  
+  // protect against no `new` keyword when building.
+  if(!(this instanceof Writer)){
+    return new Writer(w, log, val);
+  }
 
   this.val = val;
   this.log = log;

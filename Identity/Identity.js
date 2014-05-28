@@ -1,6 +1,11 @@
 // Identity
 var Identity = function(val){
-  
+
+  // protect against no `new` keyword when building.
+  if(!(this instanceof Identity)){
+    return new Identity(val);
+  }
+
   this.val = val;
 
   // fmap :: (a -> b) -> Identity a -> Identity b
@@ -22,14 +27,11 @@ var Identity = function(val){
   this.bind = function(f){
     return f(val);
   }
-
-  this.type = 'Identity';
   
   this.functor     = true;
   this.applicative = true;
   this.monad       = true;
   this.comonad     = true;
-  this.type = 'Identity';
 }
 
 module.exports = Identity;

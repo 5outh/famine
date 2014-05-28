@@ -4,6 +4,12 @@
 // NB. `oldRun` is needed because `this` gets overwritten on `new` calls.
 var State = function(f){
 
+  // protect against no `new` keyword when building.
+  if(!(this instanceof State)){
+    return new State(f);
+  }
+
+
   // runState :: s -> (a, s)
   this.runState = function(s){
     return f(s);

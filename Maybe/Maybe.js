@@ -18,6 +18,12 @@ var Nothing = {
 };
 
 var Just = function(val){
+
+  // protect against no `new` keyword when building.
+  if(!(this instanceof Just)){
+    return new Just(val);
+  }
+  
   this.val = val;
   // fmap :: (a -> b) -> Maybe a -> Maybe b
   this.fmap = function(f) {

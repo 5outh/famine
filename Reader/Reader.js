@@ -1,5 +1,11 @@
 // Reader m r = Reader{ runReader :: m -> r }
 var Reader = function(g){
+
+  // protect against no `new` keyword when building.
+  if(!(this instanceof Reader)){
+    return new Reader(g);
+  }
+
   // runReader :: m -> r
   this.runReader = g;
 

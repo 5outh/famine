@@ -3,6 +3,11 @@
 // fmap and bind on Left values are just the identity
 var Left = function(val){
 
+  // protect against being called without `new` keyword
+  if(!(this instanceof Left)){
+    return new Left(val);
+  }
+  
   this.val = val;
   
   // fmap :: (a -> b) -> Either l a -> Either l b 
@@ -19,11 +24,20 @@ var Left = function(val){
   this.bind = function(f){
     return Left(val);
   }
+
+  this.functor = true;
+  this.applicative = true;
+  this.monad = true;
+  this.type = 'Either';
 }
 
 // Right is where all the fun stuff takes place.
 var Right = function(val){
   
+  // protect against being called without `new` keyword
+  if(!(this instanceof Right)){
+    return new Right(val);
+  }
   this.val = val;
 
   // fmap :: (a -> b) -> Either l a -> Either l b 
@@ -40,11 +54,12 @@ var Right = function(val){
   this.bind = function(f){
     return f(val);
   }
-}
 
-// console.log(Right(3).bind(function(x){
-//   return (x*10);
-// }));
+  this.functor = true;
+  this.applicative = true;
+  this.monad = true;
+  this.type = 'Either';
+}
 
 module.exports = {
   Right : Right,

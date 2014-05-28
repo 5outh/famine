@@ -2,6 +2,11 @@
 
 var List = function(vals){
 
+  // protect against no `new` keyword when building.
+  if(!(this instanceof List)){
+    return new List(vals);
+  }
+
   this.val = vals;
   
   // fmap :: (a -> b) -> List a -> List b

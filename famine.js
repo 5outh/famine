@@ -35,5 +35,5 @@ module.exports = {
   MonadTuple : MonadTuple,
   Monoid : Monoid,
   id : function(n){ return n; },
-  const : function(y){ return function(x, y){ return y; } };
+  const : function(y){ return function(x, y){ return y; } }
 }
