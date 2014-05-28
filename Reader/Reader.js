@@ -1,9 +1,7 @@
 // Reader m r = Reader{ runReader :: m -> r }
 var Reader = function(g){
   // runReader :: m -> r
-  this.runReader = function(){
-    return g;
-  }
+  this.runReader = g;
 
   // (a -> b) -> Reader m a -> Reader m b
   this.fmap = function(f){
@@ -23,7 +21,7 @@ var Reader = function(g){
   // Reader m a -> (a -> Reader m b) -> Reader m b
   this.bind = function(k){
     return new Reader(function(r){
-      return runReader( ( k( g( r ) ) )( r ) );
+      return this.runReader( ( k( g( r ) ) )( r ) );
     });
   }
 
@@ -34,12 +32,10 @@ var Reader = function(g){
 
   // asks :: (r -> a) -> Reader r a
   this.asks = function(f){
-    return ask().bind(function(r){
+    return this.ask().bind(function(r){
       return new Reader(f(r));
     });
   }
 }
-
-// @TODO: Reader Monad Example
 
 module.exports = Reader;
