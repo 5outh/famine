@@ -10,28 +10,9 @@ Right now, famine is two things:
 
 \* As it stands, famine imposes a lot of trust in the user. I'm working to rectify this, but due to Javascript being untyped, much of famine will only be useful if the user already understands the concepts of famine's data types. If you're unfamiliar with these types, or need to brush up on Functors/Applicatives/Monads, check out the [Haskell typeclassopedia](http://www.haskell.org/haskellwiki/Typeclassopedia).
 
-To use:
-```javascript
-var famine = require('famine'),
-    Maybe = famine.Maybe, //contains `fmap`, `apply` (<*>), `bind` (>>=)
-    MonadMaybe = famine.MonadMaybe; //contains `pure` (i.e. `return` in haskell)
+To use: Check out the `Examples` folder for various usage of `famine`.
 
-var a = Maybe.Just(3);
-var maybeComp = a.bind(function(x){
-  return MonadMaybe.pure(x+3);
-}).fmap(function(x){
-  return x*2;
-}); // Just 18
-```
-
-Each of the included data types have `famine.X` and `famine.MonadX` included, with `pure` being a member of `MonadX` and other instance functions (`fmap`, `apply`, `bind`, etc) as above. Sum types like `Maybe` and `Either` export their inner types as members, like `Maybe.Just` above. Product types can be constructed by the `require`d variable, like `List`, for instance:
-
-```javascript
-var List = require('famine').List;
-
-var xs = List([1, 2, 3]);
-// ... and so on
-```
+Each of the included data types have `famine.X` and `famine.MonadX` included, with `pure` being a member of `MonadX` and other instance functions (`fmap`, `apply`, `bind`, etc) as members of `X`. Sum types like `Maybe` and `Either` export their inner types as members, like `Maybe.Just` in the example. Product types can be constructed by the `require`d variable, like `List`, in its example.
 
 Todos:
 
