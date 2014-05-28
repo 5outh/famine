@@ -1,9 +1,8 @@
-FAME
+FAME : Functors, Applicatives, Monads, Etc. (For node.js).
 ====
 
-## Functors, Applicatives, Monads, Etc. (For node.js).
-
 Right now, this is mainly two things:
+
 1. An experiment on how close I can emulate Haskell's data types in Javascript, and
 2. A tool for Haskell developers (or other functional programmers) to use what they know and love in a programming language not equipped with the same constructs.
 
