@@ -8,7 +8,7 @@ Right now, famine is two things:
 1. An experiment on how close I can emulate Haskell's wonderful data types in Javascript, and
 2. A tool for Haskell developers (or other functional programmers) to use what they already know\* in a programming language not equipped with the same constructs.
 
-\* As it stands, famine imposes a lot of trust in the user. I'm working to rectify this, but due to Javascript being untyped, much of famine will only be useful if the user already understands the concept of the data type being used. If you're unfamiliar with them, or need to brush up on what  Functors/Monads/Applicatives are all about, check out the Haskell [typeclassopedia](http://www.haskell.org/haskellwiki/Typeclassopedia).
+\* As it stands, famine imposes a lot of trust in the user. I'm working to rectify this, but due to Javascript being untyped, much of famine will only be useful if the user already understands the concepts of famine's data types. If you're unfamiliar with these types, or need to brush up on Functors/Applicatives/Monads, check out the [Haskell typeclassopedia](http://www.haskell.org/haskellwiki/Typeclassopedia).
 
 To use:
 ```javascript
