@@ -1,10 +1,10 @@
 FAME
 ====
 
-## *F*unctors, *A*pplicatives, *M*onads, *E*tc. (For node.js).
+## Functors, Applicatives, Monads, Etc. (For node.js).
 
 Right now, this is mainly two things:
-1. An experiment to how close I can emulate Haskell in Javascript, and
+1. An experiment on how close I can emulate Haskell's data types in Javascript, and
 2. A tool for Haskell developers (or other functional programmers) to use what they know and love in a programming language not equipped with the same constructs.
 
 To use:
@@ -32,6 +32,7 @@ var xs = List([1, 2, 3]);
 
 Todos:
 1. Handle "typing" errors.
-2. Add a `Parser` Instance.
-3. Expand on the "Etc" part -- Make other instances (bifunctor, comonad, foldable, traversable, etc).
-4. Documentation!
+2. Add a `Parser` Instance (a la `Parsec`).
+3. Monad Transformers
+4. Expand on the "Etc" part -- Make other instances (bifunctor, comonad, foldable, traversable, etc).
+5. Documentation!
