@@ -1,0 +1,16 @@
+{
+  "name": "fame",
+  "version": "0.0.0",
+  "description": "Functors, Applicatives, Monads, Etc.",
+  "main": "fame.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "functor",
+    "applicative",
+    "monad"
+  ],
+  "author": "Benjamin Kovach",
+  "license": "ISC"
+}
