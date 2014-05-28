@@ -11,23 +11,18 @@ var Identity = function(val){
   // fmap :: (a -> b) -> Identity a -> Identity b
   this.fmap = function(f){
     if(typeof f !== 'function'){
-      console.error('Expected function, but got ' + typeof f + ' in the first argument of Identity.fmap');
-      return;
+      throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.fmap');
     }
-    return new Identity(f(val));
+    return new Identity( f( val ) );
   }
   
   // apply :: Identity (a -> b) -> Identity a -> Identity b
   this.apply = function(id){
-    
     if(typeof this.val !== 'function'){
-      console.error('Expected function, but got ' + typeof this.val);
-      return;
+      throw new Error('Expected function, but got ' + typeof this.val + ' in the first argument of Identity.apply');
     }else if(!(id instanceof Identity && id.type === 'Identity')){
-      console.error('Expected Identity, but got ' + typeof id + ' in the first argument of Identity.apply');
-      return;
+      throw new Error('Expected Identity, but got ' + typeof id + ' in the first argument of Identity.apply');
     }
-
     return new Identity( (this.val)( id.val ) );
   }
 
@@ -35,8 +30,7 @@ var Identity = function(val){
   // bind :: Identity a -> (a -> Identity b) -> Identity b
   this.bind = function(f){
     if(typeof f !== 'function'){
-      console.error('Expected function, but got ' + typeof f + ' in the first argument of Identity.bind');
-      return;
+      throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.bind');
     }
     return f(val);
   }
@@ -44,8 +38,7 @@ var Identity = function(val){
   // cobind :: Identity a -> (Identity a -> b) -> Identity b
   this.cobind = function(f){
     if(typeof f !== 'function'){
-      console.error('Expected function, but got ' + typeof f + ' in the first argument of Identity.cobind');
-      return;
+      throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.cobind');
     }
     return new Identity ( f ( this ) );
   }
