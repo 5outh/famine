@@ -1,45 +1,38 @@
 // The List Monad
 
 var List = function(vals){
+
+  this.val = vals;
+  
   // fmap :: (a -> b) -> List a -> List b
-  var fmap = function(f){
+  this.fmap = function(f){
     var ret = [];
-    for(var i = 0; i < vals.length; i++){
-      ret.push(f(vals[i]));
+    for(var i = 0; i < this.val.length; i++){
+      ret.push(f(this.val[i]));
     }
-    return List(ret);
+    return new List(ret);
   }
 
   // apply :: List (a -> b) -> List a -> List b
-  var apply = function(list){
+  this.apply = function(list){
     // vals is a list of functions
     var ret = [];
-    for(var i = 0; i < vals.length; i++){
-      var curList = list.fmap(val);
+    for(var i = 0; i < this.val.length; i++){
+      var curList = list.fmap(this.val[i]);
       ret = ret.concat(curList.val);
     }
-    return List(ret);
+    return new List(ret);
   }
   // bind :: List a -> (a -> List b) -> List b
-  var bind = function(f){
-    var lists = fmap(f).val,
+  this.bind = function(f){
+    var lists = this.fmap(f).val,
         ret = [];
     for(var i = 0; i < lists.length; i++){
       var curList = lists[i];
       ret = ret.concat(curList.val);
     }
-    return List(ret);
-  }
-
-  return {
-    val : vals,
-    fmap : fmap,
-    bind : bind
+    return new List(ret);
   }
 }
-
-// console.log(List([1, 10, 100]).bind(function(x){
-//   return List([x + 10, x * 10, x - 3]);
-// }));
 
 module.exports = List

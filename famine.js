@@ -33,5 +33,6 @@ module.exports = {
   MonadState : MonadState,
   MonadWriter : MonadWriter,
   MonadTuple : MonadTuple,
-  Monoid : Monoid
+  Monoid : Monoid,
+  id : function(n){ return n; }
 }

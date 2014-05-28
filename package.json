@@ -1,8 +1,8 @@
 {
-  "name": "fmap",
-  "version": "0.0.1",
+  "name": "famine",
+  "version": "0.0.3",
   "description": "Functors, Applicatives, Monads, Etc.",
-  "main": "fmap.js",
+  "main": "famine.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

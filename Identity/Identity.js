@@ -1,23 +1,26 @@
 // Identity
 var Identity = function(val){
-  var fmap = function(f){
+  
+  this.val = val;
+
+  // fmap :: (a -> b) -> Identity a -> Identity b
+  this.fmap = function(f){
     return Identity(f(val));
   }
   
   // apply :: Identity (a -> b) -> Identity a -> Identity b
-  var apply = function(id){
+  this.apply = function(id){
     return Identity( val( id.val ) );
   }
-
-  var bind = function(f){
-    return f(val);
+  // cobind :: Identity a -> (Identity a -> b) -> Identity b
+  this.cobind = function(f){
+    console.log(this);
+    Identity ( f ( this ) );
   }
 
-  return {
-    val : val,
-    fmap : fmap,
-    apply : apply,
-    bind : bind
+  // bind :: Identity a -> (a -> Identity b) -> Identity b
+  this.bind = function(f){
+    return f(val);
   }
 }
 

@@ -14,55 +14,33 @@ var Nothing = {
 };
 
 var Just = function(val){
-  var fmap = function(f) {
+  this.val = val;
+  // fmap :: (a -> b) -> Maybe a -> Maybe b
+  this.fmap = function(f) {
     var res = f(val);
     if(res == null || res == undefined || res == Nothing){
-      return Nothing;
+      return new Nothing;
     }
     else{
-      return Just(res);
+      return new Just(res);
     }
   }
 
   // apply :: Maybe (a -> b) -> Maybe a -> Maybe b
-  var apply = function(m){
+  this.apply = function(m){
     if(m == Nothing) return Nothing;
     else{
-      return Just( val (m.val) );
+      return new Just( val (m.val) );
     }
   }
 
-  var bind = function(f) {
+  // bind :: Maybe a -> (a -> Maybe b) -> Maybe b
+  this.bind = function(f) {
     return f(val);
   }
-
-  return {
-    val : val,
-    fmap : fmap,
-    apply : apply,
-    bind : bind
-  };
 }
-
-var Maybe = {
-  Nothing : Nothing,
-  Just    : Just,
-  pure    : function(val) {
-    return Just(val);
-  }
-}
-
-// var a = Just(3);
-// console.log(a.bind(function(x){
-//   return Just(x+3);
-// }).fmap(function(x){
-//   return x*2;
-// }));
-
-// console.log(Maybe);
 
 module.exports = {
-  Maybe : Maybe,
   Just : Just,
   Nothing : Nothing
 }
