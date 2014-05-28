@@ -1,5 +1,7 @@
-FAME : Functors, Applicatives, Monads, Etc. (For node.js).
-====
+FAME
+=== 
+
+### Functors, Applicatives, Monads, Etc. (For node.js)
 
 Right now, this is mainly two things:
 
