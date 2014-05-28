@@ -10,28 +10,55 @@ var Identity = function(val){
 
   // fmap :: (a -> b) -> Identity a -> Identity b
   this.fmap = function(f){
+    if(typeof f !== 'function'){
+      console.error('Expected function, but got ' + typeof f + ' in the first argument of Identity.fmap');
+      return;
+    }
     return new Identity(f(val));
   }
   
   // apply :: Identity (a -> b) -> Identity a -> Identity b
   this.apply = function(id){
-    return new Identity( val( id.val ) );
+    
+    if(typeof this.val !== 'function'){
+      console.error('Expected function, but got ' + typeof this.val);
+      return;
+    }else if(!(id instanceof Identity && id.type === 'Identity')){
+      console.error('Expected Identity, but got ' + typeof id + ' in the first argument of Identity.apply');
+      return;
+    }
+
+    return new Identity( (this.val)( id.val ) );
   }
-  // cobind :: Identity a -> (Identity a -> b) -> Identity b
-  this.cobind = function(f){
-    console.log(this);
-    return new Identity ( f ( this ) );
-  }
+
 
   // bind :: Identity a -> (a -> Identity b) -> Identity b
   this.bind = function(f){
+    if(typeof f !== 'function'){
+      console.error('Expected function, but got ' + typeof f + ' in the first argument of Identity.bind');
+      return;
+    }
     return f(val);
+  }
+
+  // cobind :: Identity a -> (Identity a -> b) -> Identity b
+  this.cobind = function(f){
+    if(typeof f !== 'function'){
+      console.error('Expected function, but got ' + typeof f + ' in the first argument of Identity.cobind');
+      return;
+    }
+    return new Identity ( f ( this ) );
   }
   
   this.functor     = true;
   this.applicative = true;
   this.monad       = true;
   this.comonad     = true;
+  this.type        = 'Identity';
+}
+
+Identity.prototype.toString = function idToString(){
+  return "Identity " + (this.val).toString();
 }
 
 module.exports = Identity;

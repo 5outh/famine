@@ -5,7 +5,7 @@ var famine = require('../famine'),
 var five = new Identity(5);
 
 var result = five.bind(function(n){
-  return MonadIdentity.pure(n + 9); // Identity 14
+  return MonadIdentity.pure(n + 9);
 });
 
-console.log(result);
+console.log(result.toString()); // Identity 14
