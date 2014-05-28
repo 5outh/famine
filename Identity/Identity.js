@@ -53,7 +53,7 @@ var Identity = function(val){
   this.type        = 'Identity';
 }
 
-Identity.prototype.toString = function idToString(){
+Identity.prototype.toString = function() {
   return "Identity " + (this.val).toString();
 }
 

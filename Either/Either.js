@@ -86,6 +86,14 @@ var Right = function(val){
   this.type = 'Either';
 }
 
+Right.prototype.toString = function() {
+  return "Right " + (this.val).toString();
+}
+
+Left.prototype.toString = function() {
+  return "Left " + (this.val).toString();
+}
+
 module.exports = {
   Right : Right,
   Left : Left

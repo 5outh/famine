@@ -3,7 +3,7 @@ var famine = require('../famine'),
     MonadEither = famine.MonadEither;
 
 var something = new Either.Right(10).bind(function(n){
-  return new Either.Left('FAILURE: ' + n);
+  return new MonadEither.pure('FAILURE: ' + n);
 });
 
-console.log(something); // Left "Failure: 10"
+console.log(something.toString()); // Left "Failure: 10"
