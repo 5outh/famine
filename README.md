@@ -31,6 +31,7 @@ var xs = List([1, 2, 3]);
 ```
 
 Todos:
+
 1. Handle "typing" errors.
 2. Add a `Parser` Instance (a la `Parsec`).
 3. Monad Transformers
