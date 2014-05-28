@@ -26,13 +26,16 @@ var Identity = function(val){
     return new Identity( (this.val)( id.val ) );
   }
 
-
   // bind :: Identity a -> (a -> Identity b) -> Identity b
   this.bind = function(f){
     if(typeof f !== 'function'){
       throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.bind');
     }
-    return f(val);
+    var ret = f(val);
+    if(!(ret instanceof Identity && ret.type === 'Identity')){
+      throw new Error('Expected `f` to return an `Identity`, but returned something else.');
+    }
+    return ret;
   }
 
   // cobind :: Identity a -> (Identity a -> b) -> Identity b
