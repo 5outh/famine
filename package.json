@@ -1,16 +1,25 @@
 {
-  "name": "fame",
-  "version": "0.0.0",
+  "name": "fmap",
+  "version": "0.0.1",
   "description": "Functors, Applicatives, Monads, Etc.",
-  "main": "fame.js",
+  "main": "fmap.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "homepage" : "https://github.com/5outh/famine",
   "keywords": [
     "functor",
     "applicative",
-    "monad"
+    "monad",
+    "functional",
+    "programming",
+    "haskell"
   ],
-  "author": "Benjamin Kovach",
-  "license": "ISC"
+  "author": { 
+    "name" : "Benjamin Kovach"
+  , "email" : "bkovach13@gmail.com"
+  , "url" : "http://5outh.github.io/"
+  },
+  "license": "MIT",
+  "repository" : "https://github.com/5outh/famine"
 }
