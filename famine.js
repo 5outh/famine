@@ -34,5 +34,6 @@ module.exports = {
   MonadWriter : MonadWriter,
   MonadTuple : MonadTuple,
   Monoid : Monoid,
-  id : function(n){ return n; }
+  id : function(n){ return n; },
+  const : function(y){ return function(x, y){ return y; } };
 }
