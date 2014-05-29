@@ -12,7 +12,19 @@ Right now, famine is two things:
 
 To use: Check out the `Examples` folder for various usage of `famine`.
 
-Each of the included data types have `famine.X` and `famine.MonadX` included, with `pure` being a member of `MonadX` and other instance functions (`fmap`, `apply`, `bind`, etc) as members of `X`. Sum types like `Maybe` and `Either` export their inner types as members, like `Maybe.Just` in the example. Product types can be constructed by the `require`d variable, like `List`, in its example.
+Each of the included data types `X` implement the functions (`fmap`, `apply`, `bind`, etc) as members of `X`, with `pure` (`return` in Haskell) and `copure` (where applicable, `copure :: Comonad w => w a -> a`). Sum types like `Maybe` and `Either` export their inner types as members, like `Maybe.Just` in its example. Product types can be constructed by the `require`d variable, like `List`.
+
+Famine currently exports "the usual suspects" as data types, each implementing Functor, Applicative and Monad:
+
+1. Identity (The trivial Functor/Monad, also a Comonad)
+2. Maybe
+3. List
+4. Either
+5. Tuple
+6. Writer
+7. State
+
+Famine also exports a `Monoid` data type, which can be used to build structures with appropriate `mempty` and `mappend` definitions.
 
 Todos:
 
