@@ -16,8 +16,6 @@ Each of the included data types have `famine.X` and `famine.MonadX` included, wi
 
 Todos:
 
-1. Handle "typing" errors.
-2. Add a `Parser` Instance (a la `Parsec`).
-3. Monad Transformers
-4. Expand on the "Etc" part -- Make other instances (bifunctor, comonad, foldable, traversable, etc).
-5. Documentation!
+1. Documentation!
+2. Expand on the "Etc" part -- Make other instances (bifunctor, comonad, foldable, traversable, etc).
+3. Monad Transformers?
