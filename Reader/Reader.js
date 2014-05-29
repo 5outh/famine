@@ -43,25 +43,19 @@ var Reader = function(g){
     return new Reader(function(r){
       var next = k(g(r));
       if(!(next instanceof Reader && next.type === 'Reader')){
-        throw new Error('Expected Reader but got ' + typeof next + ' in return type for Reader.Bind');
+        throw new Error('Expected Reader but got ' + typeof next + ' in return type for Reader.bind');
       }
       return this.runReader( next.runReader( r ) );
     });
   }
 
-  // ask :: Reader r r
-  this.ask = function(){
-    return new Reader(function(x){ return x; });
-  }
 
-  // asks :: (r -> a) -> Reader r a
-  this.asks = function(f){
+  // local :: (s -> r) -> Reader r a -> Reader s a
+  this.local = function(f){
     if(typeof f !== 'function'){
-      throw new Error('Expected function but got ' + typeof f + ' in the first argument of Reader.asks');
+      throw new Error('Expected function but got ' + typeof f + ' in the first argument of Reader.local');
     }
-    return this.ask().bind(function(r){
-      return new Reader(f(r));
-    });
+    return new Reader(function(r){ return f( (this.runReader)( r ) ); } );
   }
 
   this.functor = true;
