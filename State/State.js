@@ -86,6 +86,24 @@ var State = function(f){
   this.type = 'State';
 }
 
+State.get = function(){
+  return new State(function(s){
+    return new Tuple(s, s);
+  });
+};
+
+State.put = function(s){
+  return new State(function(r){
+    return new Tuple(null, s);
+  });
+}
+
+State.pure = function(a){
+  return new State(function(s){
+    return new Tuple(a, s);
+  });
+}
+
 // NB. toString doesn't have a nice instance for State.
 
 module.exports = State;

@@ -62,6 +62,10 @@ var List = function(vals){
   this.type = 'List';
 }
 
+List.pure = function(x){
+  return List([x]);
+}
+
 List.prototype.toString = function(){
   return "List " + (this.val.toString());
 }

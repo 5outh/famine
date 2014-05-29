@@ -96,5 +96,8 @@ Left.prototype.toString = function() {
 
 module.exports = {
   Right : Right,
-  Left : Left
+  Left : Left,
+  pure : function(x){
+    return Right(x);
+  }
 }

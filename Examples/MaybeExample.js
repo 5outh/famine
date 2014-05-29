@@ -1,7 +1,6 @@
 var famine = require('../famine'),
-    Maybe  = famine.Maybe,
-    MonadMaybe = famine.MonadMaybe;
-
+    Maybe  = famine.Maybe;
+    
 var a = new Maybe.Just(3);
 
 var addThreeMultTwo = (a.bind(function(x){

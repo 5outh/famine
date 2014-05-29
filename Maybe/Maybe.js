@@ -80,5 +80,8 @@ Just.prototype.toString = function(){
 
 module.exports = {
   Just : Just,
-  Nothing : Nothing
+  Nothing : Nothing,
+  pure : function(val) {
+    return Maybe.Just(val);
+  }
 }

@@ -53,6 +53,15 @@ var Identity = function(val){
   this.type        = 'Identity';
 }
 
+// statics
+Identity.pure = function(x){ return new Identity(x); }
+Identity.copure = function(idx){ 
+  if(!(idx instanceof Identity && idx.type === 'Identity')){
+    throw new Error('Expected type Identity in first argument of MonadIdentity.copure, but got ' + typeof idx);
+  }
+  return idx.val;
+}
+
 Identity.prototype.toString = function() {
   return "Identity " + (this.val).toString();
 }

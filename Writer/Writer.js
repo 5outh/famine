@@ -66,4 +66,24 @@ var Writer = function(w, log, val){
   this.type = 'Writer';
 }
 
+Writer.listen = function(m){
+  if(!(m instanceof Writer && m.type === 'Writer')) {
+    throw new Error('Expected Writer but got ' + typeof m + ' in the first argument of MonadWriter.listen');
+  }
+  var next = m.runWriter();
+  return new Writer(next.monoid, new Tuple(new Tuple(next.val, next.log), next.log) );
+}
+
+Writer.pass = function(m){
+  if(!(m instanceof Writer && m.type === 'Writer')) {
+    throw new Error('Expected Writer but got ' + typeof m + ' in the first argument of MonadWriter.pass');
+  }
+  var next = m.runWriter();
+  return new Writer(next.monoid, next.fst.fst, (next.fst.snd)(next.snd));
+}
+
+Writer.pure = function(monoid, val){
+  return new Writer(monoid, monoid.mempty, val);
+}
+
 module.exports = Writer;

@@ -49,6 +49,13 @@ var Tuple = function(a, b){
   this.type = 'Tuple';
 }
 
+Tuple.pure = function(monoid, b){
+  if(monoid.type !== 'Monoid'){
+    throw new Error('Expected Monoid but got ' + typeof monoid + ' in the first argument of Tuple.pure'); 
+  }
+  return new Tuple(monoid.mempty, b);
+}
+
 Tuple.prototype.toString = function(){
   return "(" + this.fst + "," + this.snd + ")";
 }

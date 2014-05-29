@@ -1,6 +1,5 @@
 var famine    = require('../famine'),
-    List      = famine.List,
-    MonadList = famine.MonadList;
+    List      = famine.List;
 
 var xs = new List([1, 2, 3]);
 
