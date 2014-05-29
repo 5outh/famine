@@ -15,9 +15,6 @@ To use: Check out the `Examples` folder for various usage of `famine`.
 Each of the included data types have `famine.X` and `famine.MonadX` included, with `pure` being a member of `MonadX` and other instance functions (`fmap`, `apply`, `bind`, etc) as members of `X`. Sum types like `Maybe` and `Either` export their inner types as members, like `Maybe.Just` in the example. Product types can be constructed by the `require`d variable, like `List`, in its example.
 
 Todos:
-
-1. Handle "typing" errors.
-2. Add a `Parser` Instance (a la `Parsec`).
-3. Monad Transformers
-4. Expand on the "Etc" part -- Make other instances (bifunctor, comonad, foldable, traversable, etc).
-5. Documentation!
+1. Documentation!
+2. Expand on the "Etc" part -- Make other instances (bifunctor, comonad, foldable, traversable, etc).
+3. Monad Transformers?
