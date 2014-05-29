@@ -12,23 +12,45 @@ var Tuple = function(a, b){
 
   // fmap :: (a -> b) -> (c, a) -> (c, b)
   this.fmap = function(f){
+    if(typeof f !== 'function'){
+      throw new Error('Expected function but got ' + typeof f + ' in the first argument of Tuple.fmap');
+    }
     return new Tuple(a, f(b));
   };
 
   // apply :: (c, (a -> b)) -> (c, a) -> (c, b)
   this.apply = function(tuple){
-    return new Tuple(tuple.fst, b(tuple.snd));
+    if(!(tuple instanceof Tuple && tuple.type === 'Tuple')) {
+      throw new Error('Expected Tuple but got ' + typeof tuple + ' in the first argument of Tuple.apply');
+    }else if(!(this.snd instanceof Tuple && this.snd.type === 'Tuple')){
+      throw new Error('Expected Tuple but got ' + typeof (this.snd) + ' in the snd value of this in Tuple.apply'); 
+    }
+    return new Tuple(tuple.fst, (this.snd)(tuple.snd));
   };
 
   // bind :: (c, a) -> (a -> (c, b)) -> (c, b)
   this.bind = function(f){
-    return f(b);
+    if(typeof f !== 'function'){
+      throw new Error('Expected function but got ' + typeof f + ' in the first argument of Tuple.bind');
+    }
+    
+    var res = f(b);
+    
+    if(!(res instanceof Tuple && res.type === 'Tuple')){
+      throw new Error('Expected Tuple but got ' + typeof res + ' in the return type of Tuple.apply'); 
+    }
+    
+    return res;
   };
 
   this.functor = true;
   this.applicative = true;
   this.monad = true;
   this.type = 'Tuple';
+}
+
+Tuple.prototype.toString = function(){
+  return "(" + this.fst + "," + this.snd + ")";
 }
 
 module.exports = Tuple;

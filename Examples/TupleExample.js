@@ -7,4 +7,4 @@ var doubleSecond = new Tuple(1, 'x').bind(function(second){
   return new Tuple(1, second + second);
 });
 
-console.log(doubleSecond); // (1, 'xx')
+console.log(doubleSecond.toString()); // (1, 'xx')
