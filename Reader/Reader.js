@@ -6,19 +6,30 @@ var Reader = function(g){
     return new Reader(g);
   }
 
+  if(typeof g !== 'function'){
+    throw new Error('Expected function but got ' + typeof g + ' in constructor for Reader');
+  }
+
   // runReader :: m -> r
   this.runReader = g;
 
   // (a -> b) -> Reader m a -> Reader m b
   this.fmap = function(f){
+    if(typeof f !== 'function'){
+      throw new Error('Expected function but got ' + typeof f + ' in the first argument of Reader.fmap');
+    }
     return new Reader(function(r){ return f( g( r ) ); });
   }
   
   // Reader m (a -> b) -> Reader m a -> Reader m b
   this.apply = function(reader){
-    // g :: m -> (a -> b)
+    if(!(reader instanceof Reader && reader.type === 'Reader')){
+      throw new Error('Expected Reader but got ' + typeof reader + ' in the first argument of Reader.apply');
+    }
     var next = reader.runReader();
-
+    if(typeof next !== 'function'){
+      throw new Error('Expected function but got ' + typeof next + ' in value next in Reader.apply');
+    }
     return new Reader(function(m){
       return g(m)(next(m));
     });
@@ -26,18 +37,28 @@ var Reader = function(g){
 
   // Reader m a -> (a -> Reader m b) -> Reader m b
   this.bind = function(k){
+    if(typeof k !== 'function'){
+      throw new Error('Expected function but got ' + typeof k + ' in the first argument of Reader.bind');
+    }
     return new Reader(function(r){
-      return this.runReader( ( k( g( r ) ) )( r ) );
+      var next = k(g(r));
+      if(!(next instanceof Reader && next.type === 'Reader')){
+        throw new Error('Expected Reader but got ' + typeof next + ' in return type for Reader.Bind');
+      }
+      return this.runReader( next.runReader( r ) );
     });
   }
 
   // ask :: Reader r r
   this.ask = function(){
-    return new Reader(g);
+    return new Reader(function(x){ return x; });
   }
 
   // asks :: (r -> a) -> Reader r a
   this.asks = function(f){
+    if(typeof f !== 'function'){
+      throw new Error('Expected function but got ' + typeof f + ' in the first argument of Reader.asks');
+    }
     return this.ask().bind(function(r){
       return new Reader(f(r));
     });
@@ -48,5 +69,7 @@ var Reader = function(g){
   this.monad = true;
   this.type = 'Reader';
 }
+
+//NB. toString doesn't really have a nice definition for Reader.
 
 module.exports = Reader;
