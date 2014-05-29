@@ -10,4 +10,4 @@ var addThreeMultTwo = (a.bind(function(x){
   return x*2;
 }));
 
-console.log(addThreeMultTwo); // Just 12
+console.log(addThreeMultTwo.toString()); // Just 12

@@ -14,7 +14,8 @@ var Nothing = {
   functor : true, 
   applicative : true,
   monad : true,
-  type : 'Maybe'
+  type : 'Maybe',
+  toString : function(){ return "Nothing"; }
 };
 
 var Just = function(val){
@@ -25,10 +26,16 @@ var Just = function(val){
   }
   
   this.val = val;
+
   // fmap :: (a -> b) -> Maybe a -> Maybe b
   this.fmap = function(f) {
-    var res = f(val);
-    if(res == null || res == undefined || res == Nothing){
+    if(typeof f !== 'function'){
+      throw new Error('Expected function but got ' + typeof f + ' in the first argument of Just.fmap');
+    }
+    
+    var res = f(this.val);
+
+    if(res == Nothing){
       return new Nothing;
     }
     else{
@@ -38,7 +45,12 @@ var Just = function(val){
 
   // apply :: Maybe (a -> b) -> Maybe a -> Maybe b
   this.apply = function(m){
-    if(m == Nothing) return Nothing;
+    if(typeof (this.val) !== 'function'){
+      throw new Error('Expected function but got ' + typeof (this.val) + ' in function Just.apply');
+    }else if(m.type !== 'Maybe'){
+      throw new Error('Expected Maybe but got ' + typeof m + ' in the first argument of Just.apply')
+    }
+    if(m === Nothing) return Nothing;
     else{
       return new Just( val (m.val) );
     }
@@ -46,13 +58,24 @@ var Just = function(val){
 
   // bind :: Maybe a -> (a -> Maybe b) -> Maybe b
   this.bind = function(f) {
-    return f(val);
+    if(typeof f !== 'function'){
+      throw new Error('Expected function but got ' + typeof f + ' in function Just.bind');
+    }
+    var res = f(this.val);
+    if(res.type !== 'Maybe'){
+      throw new Error('Expected Maybe but got ' + typeof res + ' in the return type of Just.bind');
+    }
+    return res;
   }
 
   this.functor = true;
   this.applicative = true;
   this.monad = true;
   this.type = 'Maybe';
+}
+
+Just.prototype.toString = function(){
+  return "Just " + (this.val.toString());
 }
 
 module.exports = {
