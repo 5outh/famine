@@ -6,6 +6,7 @@ var Identity = function(val){
   }
 
   this.value = val;
+  this.type = 'Identity';
 };
 
 Identity.prototype.concat = function(id){
@@ -17,83 +18,42 @@ Identity.prototype.empty = function() {
 };
 
 Identity.prototype.map = function(f) {
+  if(typeof f !== 'function'){
+      throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.map');
+    }
   return new Identity(f(this.value));
 };
 
 Identity.prototype.ap = function(id) {
+  if(typeof this.value !== 'function'){
+      throw new Error('Expected function, but got ' + typeof this.value + ' in the first argument of Identity.ap');
+    }else if(!(id instanceof Identity && id.type === 'Identity')){
+      throw new Error('Expected Identity, but got ' + typeof id + ' in the first argument of Identity.ap');
+    }
   return new Identity(this.value(id.value));
 };
 
 Identity.prototype.chain = function(f) {
-  return new f(this.value);
+  if(typeof f !== 'function'){
+    throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.chain');
+  }
+  var ret = f(this.value);
+  if(!(ret instanceof Identity && ret.type === 'Identity')){
+    throw new Error('Expected `f` to return an `Identity`, but returned something else in Identity.chain.');
+  }
+  return f(this.value);
 };
 
 Identity.prototype.cochain = function(f){
+  if(typeof f !== 'function'){
+    throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.cochain');
+  }
   return new Identity(f(this));
 }
 
 Identity.of = function(a){
   return new Identity(a);
 };
-
-module.exports = Identity;
-
-// var Identity = function(val){
-
-//   // protect against no `new` keyword when building.
-//   if(!(this instanceof Identity)){
-//     return new Identity(val);
-//   }
-
-//   this.val = val;
-
-//   // fmap :: (a -> b) -> Identity a -> Identity b
-//   this.fmap = function(f){
-//     if(typeof f !== 'function'){
-//       throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.fmap');
-//     }
-//     return new Identity( f( val ) );
-//   }
-  
-//   // apply :: Identity (a -> b) -> Identity a -> Identity b
-//   this.apply = function(id){
-//     if(typeof this.val !== 'function'){
-//       throw new Error('Expected function, but got ' + typeof this.val + ' in the first argument of Identity.apply');
-//     }else if(!(id instanceof Identity && id.type === 'Identity')){
-//       throw new Error('Expected Identity, but got ' + typeof id + ' in the first argument of Identity.apply');
-//     }
-//     return new Identity( (this.val)( id.val ) );
-//   }
-
-//   // bind :: Identity a -> (a -> Identity b) -> Identity b
-//   this.bind = function(f){
-//     if(typeof f !== 'function'){
-//       throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.bind');
-//     }
-//     var ret = f(val);
-//     if(!(ret instanceof Identity && ret.type === 'Identity')){
-//       throw new Error('Expected `f` to return an `Identity`, but returned something else.');
-//     }
-//     return ret;
-//   }
-
-//   // cobind :: Identity a -> (Identity a -> b) -> Identity b
-//   this.cobind = function(f){
-//     if(typeof f !== 'function'){
-//       throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.cobind');
-//     }
-//     return new Identity ( f ( this ) );
-//   }
-  
-//   this.functor     = true;
-//   this.applicative = true;
-//   this.monad       = true;
-//   this.comonad     = true;
-//   this.type        = 'Identity';
-// }
-
-// // statics
-// Identity.pure = function(x){ return new Identity(x); }
 
 Identity.coof = function(idx){ 
   if(!(idx instanceof Identity && idx.type === 'Identity')){
@@ -105,5 +65,13 @@ Identity.coof = function(idx){
 Identity.prototype.toString = function() {
   return "Identity " + this.value.toString();
 }
+
+// @TODO: These can probably be more global checks
+Identity.semigroup   = true;
+Identity.monoid      = true;
+Identity.functor     = true;
+Identity.applicative = true;
+Identity.monad       = true;
+Identity.comonad     = true;
 
 module.exports = Identity;
