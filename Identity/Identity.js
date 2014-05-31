@@ -1,3 +1,5 @@
+var TC = require('../TypeChecker');
+
 // Identity
 var Identity = function(val){
   
@@ -11,19 +13,20 @@ var Identity = function(val){
 
 // Semigroup (Semigroup a => Identity a)
 Identity.prototype.empty = function() {
-  if(!this.value.monoid){
+  if(!TC.isMonoid(this.value)){
     throw new Error('Expected value to be a Monoid in Identity.empty');
-  }else if(!id.value.monoid){
+  }else if(!TC.isMonoid(id.value)){
     throw new Error('Expected id.value to be a Monoid in the first argument of Identity.empty');
   }
+  // empty can be in constructor or base class
   return new Identity( this.value.empty ? this.value.empty() : this.value.constructor.empty() );
 };
 
 // Monoid (Monoid a => Identity a -> Identity a -> Identity a)
 Identity.prototype.concat = function(id){
-  if(!this.value.monoid){
+  if(!TC.isMonoid(this.value)){
     throw new Error('Expected value to be a Monoid in Identity.concat');
-  }else if(!id.value.monoid){
+  }else if(!TC.isMonoid(id.value)){
     throw new Error('Expected id.value to be a Monoid in the first argument of Identity.concat');
   }
   return new Identity(this.value.concat(id.value));
@@ -31,7 +34,7 @@ Identity.prototype.concat = function(id){
 
 // Functor
 Identity.prototype.map = function(f) {
-  if(typeof f !== 'function'){
+  if(!TC.isFunction(f)){
       throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.map');
     }
   return new Identity(f(this.value));
@@ -39,7 +42,7 @@ Identity.prototype.map = function(f) {
 
 // Applicative
 Identity.prototype.ap = function(id) {
-  if(typeof this.value !== 'function'){
+  if(!TC.isFunction(this.value)){
       throw new Error('Expected function, but got ' + typeof this.value + ' in the first argument of Identity.ap');
     }else if(!(id instanceof Identity && id.type === 'Identity')){
       throw new Error('Expected Identity, but got ' + typeof id + ' in the first argument of Identity.ap');
@@ -47,9 +50,9 @@ Identity.prototype.ap = function(id) {
   return new Identity(this.value(id.value));
 };
 
-// Monad
+// Chain
 Identity.prototype.chain = function(f) {
-  if(typeof f !== 'function'){
+  if(!TC.isFunction(f)){
     throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.chain');
   }
   var ret = f(this.value);
@@ -59,23 +62,23 @@ Identity.prototype.chain = function(f) {
   return f(this.value);
 };
 
-// Comonad
+// Extend
 Identity.prototype.extend = function(f){
-  if(typeof f !== 'function'){
+  if(!TC.isFunction(f)){
     throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.extend');
   }
   return new Identity(f(this));
 }
 
-// Chain
+// Monad
 Identity.of = function(a){
   return new Identity(a);
 };
 
-// Extendable? 
-Identity.extract = function(idx){ 
+// Comonad
+Identity.from = function(idx){ 
   if(!(idx instanceof Identity && idx.type === 'Identity')){
-    throw new Error('Expected type Identity in first argument of MonadIdentity.extract, but got ' + typeof idx);
+    throw new Error('Expected type Identity in first argument of Identity.from, but got ' + typeof idx);
   }
   return idx.value;
 }
