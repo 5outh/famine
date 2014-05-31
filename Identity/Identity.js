@@ -9,14 +9,27 @@ var Identity = function(val){
   this.type = 'Identity';
 };
 
+// Semigroup (Semigroup a => Identity a)
+Identity.prototype.empty = function() {
+  if(!this.value.monoid){
+    throw new Error('Expected value to be a Monoid in Identity.empty');
+  }else if(!id.value.monoid){
+    throw new Error('Expected id.value to be a Monoid in the first argument of Identity.empty');
+  }
+  return new Identity( this.value.empty ? this.value.empty() : this.value.constructor.empty() );
+};
+
+// Monoid (Monoid a => Identity a -> Identity a -> Identity a)
 Identity.prototype.concat = function(id){
+  if(!this.value.monoid){
+    throw new Error('Expected value to be a Monoid in Identity.concat');
+  }else if(!id.value.monoid){
+    throw new Error('Expected id.value to be a Monoid in the first argument of Identity.concat');
+  }
   return new Identity(this.value.concat(id.value));
 };
 
-Identity.prototype.empty = function() {
-  return new Identity(this.value.constructor.empty());
-};
-
+// Functor
 Identity.prototype.map = function(f) {
   if(typeof f !== 'function'){
       throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.map');
@@ -24,6 +37,7 @@ Identity.prototype.map = function(f) {
   return new Identity(f(this.value));
 };
 
+// Applicative
 Identity.prototype.ap = function(id) {
   if(typeof this.value !== 'function'){
       throw new Error('Expected function, but got ' + typeof this.value + ' in the first argument of Identity.ap');
@@ -33,6 +47,7 @@ Identity.prototype.ap = function(id) {
   return new Identity(this.value(id.value));
 };
 
+// Monad
 Identity.prototype.chain = function(f) {
   if(typeof f !== 'function'){
     throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.chain');
@@ -44,20 +59,23 @@ Identity.prototype.chain = function(f) {
   return f(this.value);
 };
 
-Identity.prototype.cochain = function(f){
+// Comonad
+Identity.prototype.extend = function(f){
   if(typeof f !== 'function'){
-    throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.cochain');
+    throw new Error('Expected function, but got ' + typeof f + ' in the first argument of Identity.extend');
   }
   return new Identity(f(this));
 }
 
+// Chain
 Identity.of = function(a){
   return new Identity(a);
 };
 
-Identity.coof = function(idx){ 
+// Extendable? 
+Identity.extract = function(idx){ 
   if(!(idx instanceof Identity && idx.type === 'Identity')){
-    throw new Error('Expected type Identity in first argument of MonadIdentity.copure, but got ' + typeof idx);
+    throw new Error('Expected type Identity in first argument of MonadIdentity.extract, but got ' + typeof idx);
   }
   return idx.value;
 }
