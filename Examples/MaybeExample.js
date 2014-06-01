@@ -3,9 +3,9 @@ var famine = require('../famine'),
     
 var a = new Maybe.Just(3);
 
-var addThreeMultTwo = (a.bind(function(x){
-  return new Maybe.Just(x+3);
-}).fmap(function(x){
+var addThreeMultTwo = (a.chain(function(x){
+  return new Maybe.of(x+3);
+}).map(function(x){
   return x*2;
 }));
 

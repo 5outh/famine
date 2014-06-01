@@ -15,8 +15,6 @@ var Identity = function(val){
 Identity.prototype.empty = function() {
   if(!TC.isMonoid(this.value)){
     throw new Error('Expected value to be a Monoid in Identity.empty');
-  }else if(!TC.isMonoid(id.value)){
-    throw new Error('Expected id.value to be a Monoid in the first argument of Identity.empty');
   }
   // empty can be in constructor or base class
   return new Identity( this.value.empty ? this.value.empty() : this.value.constructor.empty() );
@@ -86,13 +84,5 @@ Identity.from = function(idx){
 Identity.prototype.toString = function() {
   return "Identity " + this.value.toString();
 }
-
-// @TODO: These can probably be more global checks
-Identity.semigroup   = true;
-Identity.monoid      = true;
-Identity.functor     = true;
-Identity.applicative = true;
-Identity.monad       = true;
-Identity.comonad     = true;
 
 module.exports = Identity;
