@@ -1,4 +1,5 @@
-var TC = require('../TypeChecker');
+var TC = require('../TypeChecker'),
+    Errors = require('../Errors');
 
 // Nothing
 var Nothing = function(){
@@ -16,7 +17,6 @@ Nothing.prototype.ap = function(m){ return Nothing; };
 Nothing.prototype.bind = function(f){ return Nothing; };
 Nothing.prototype.toString = function(){ return "Nothing"; };
 
-
 // Just
 var Just = function(value){
 
@@ -30,9 +30,7 @@ var Just = function(value){
 }
 
 Just.prototype.map = function(f){
-  if(!TC.isFunction(f)){
-    throw new Error('Expected function but got ' + typeof f + ' in the first argument of Just.map');
-  }
+  Errors.argError(!TC.isFunction(f), f, 'function', 'first', 'Just.map');
   
   var res = f(this.value);
 
@@ -41,30 +39,22 @@ Just.prototype.map = function(f){
 }
 
 Just.prototype.empty = function(){
-  if(!TC.isMonoid(this.value)){
-    throw new Error('Expected value to be a Monoid in Just.empty');
-  }
+  Errors.varError(!TC.isMonoid(this.value), this.value, 'Monoid', 'Just.empty');
 
   return new Just( this.value.empty ? this.value.empty() : this.value.constructor.empty() );
 }
 
 Just.prototype.concat = function(maybe){
-  if(!TC.isMonoid(this.value)){
-    throw new Error('Expected value to be a Monoid in Just.concat');
-  }else if(!maybe.type === 'Maybe'){
-    throw new Error('Expected maybe to be either Just or Nothing in the first argument of Just.concat'); 
-  }else if(!TC.isMonoid(maybe.value)){
-    throw new Error('Expected maybe.value to be a Monoid in the first argument of Just.concat');
-  }
+  Errors.varError(!TC.isMonoid(this.value), this.value, 'Monoid', 'Just.concat');
+  Errors.argError(!maybe.type === 'Maybe', maybe, 'Maybe', 'first', 'Just.concat');
+  Errors.argError(!TC.isMonoid(maybe.value), maybe.value, 'Monoid', 'first', 'Just.concat');
+
   return new Just(this.value.concat(id.value));
 };
 
 Just.prototype.ap = function(m){
-  if(typeof (this.value) !== 'function'){
-    throw new Error('Expected function but got ' + typeof (this.value) + ' in function Just.ap');
-  }else if(m.type !== 'Maybe'){
-    throw new Error('Expected Maybe but got ' + typeof m + ' in the first argument of Just.ap')
-  }
+  Errors.varError(!TC.isFunction(this.value), this.value, 'function', 'Just.ap');
+  Errors.argError(m.type !== 'Maybe', m, 'Maybe', 'first', 'Just.concat');
   if(m === Nothing) return Nothing;
   else{
     return new Just( val (m.value) );
@@ -72,13 +62,9 @@ Just.prototype.ap = function(m){
 }
 
 Just.prototype.chain = function(f) {
-  if(!TC.isFunction(f)){
-    throw new Error('Expected function but got ' + typeof f + ' in function Just.chain');
-  }
+  Errors.varError(!TC.isFunction(f), f, 'function', 'Just.chain');
   var res = f(this.value);
-  if(res.type !== 'Maybe'){
-    throw new Error('Expected Maybe but got ' + typeof res + ' in the return type of Just.chain');
-  }
+  Errors.returnTypeError(res.type !== 'Maybe', res, 'Maybe', 'Just.chain');
   return res;
 }
 
