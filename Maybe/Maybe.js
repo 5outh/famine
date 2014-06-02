@@ -56,9 +56,7 @@ Just.prototype.ap = function(m){
   Errors.varError(!TC.isFunction(this.value), this.value, 'function', 'Just.ap');
   Errors.argError(m.type !== 'Maybe', m, 'Maybe', 'first', 'Just.concat');
   if(m === Nothing) return Nothing;
-  else{
-    return new Just( val (m.value) );
-  }
+  else return new Just( val (m.value) );
 }
 
 Just.prototype.chain = function(f) {
