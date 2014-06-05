@@ -13,6 +13,12 @@ var Tuple = function(a, b){
 }
 
 Tuple.prototype.toString = function(){
+  if(this.fst instanceof Array){
+    this.fst = '[' + this.fst + ']'
+  }
+  if(this.snd instanceof Array){
+    this.snd = '[' + this.snd + ']'
+  }
   return "(" + this.fst + "," + this.snd + ")";
 }
 
