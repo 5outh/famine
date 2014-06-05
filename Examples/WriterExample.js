@@ -7,13 +7,13 @@ var famine = require('../famine'),
 var tellFactorial = function(n){
 
   // start at 1, and collect string values.
-  var writer = Writer.of(Monoid.StringM, 1);
+  var writer = Writer.of(new Monoid.StringM(), 1);
   
   while(n > 0){
     
     // replace the writer's inner value and log a message.
     writer = writer.chain(function(x){
-      return Writer.of(Monoid.StringM, x * n);
+      return Writer.of(new Monoid.StringM(), x * n);
     }).tell("Multiplied by: " + n + "\n");
 
     // once the writer has been replaced, tell about the new value.

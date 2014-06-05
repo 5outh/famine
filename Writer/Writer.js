@@ -1,5 +1,6 @@
 var Monoid = require('../Monoid/Monoid'),
-    Tuple  = require('../Tuple/Tuple');
+    Tuple  = require('../Tuple/Tuple'),
+    TC     = require('../TypeChecker');
 
 // Writer w a = Writer { runWriter :: (a, w) }  
 var Writer = function(w, log, val){
@@ -9,7 +10,7 @@ var Writer = function(w, log, val){
     return new Writer(w, log, val);
   }
 
-  if(!w.monoid){
+  if(!TC.isMonoid(w)){
     throw new Error('Expected Monoid in the first argument of the constructor for Writer but got something else');
   }
 
@@ -52,14 +53,14 @@ Writer.prototype.chain = function(f){
     throw new Error('Expected Writer but got ' + typeof next + ' in the variable next in Writer.chain');
   }
 
-  return new Writer(this.monoid, this.monoid.mappend(this.log, next.log), next.val);
+  return new Writer(this.monoid, this.monoid.concat(this.log, next.log), next.val);
 }
 
 Writer.prototype.tell = function(phrase){
-  if(typeof phrase !== typeof this.monoid.mempty){
-    throw new Error('Expected ' + typeof (monoid.mempty) + ' but got ' + typeof phrase + ' in the first argument of Writer.tell');
+  if(typeof phrase !== typeof this.monoid.empty()){
+    throw new Error('Expected ' + typeof (this.monoid.empty()) + ' but got ' + typeof phrase + ' in the first argument of Writer.tell');
   }
-  return new Writer(this.monoid, this.monoid.mappend(this.log, phrase), this.val);
+  return new Writer(this.monoid, this.monoid.concat(this.log, phrase), this.val);
 }
 
 
@@ -80,7 +81,7 @@ Writer.pass = function(m){
 }
 
 Writer.of = function(monoid, val){
-  return new Writer(monoid, monoid.mempty, val);
+  return new Writer(monoid, monoid.empty(), val);
 }
 
 module.exports = Writer;
