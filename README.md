@@ -27,8 +27,6 @@ All data types lie in accordance with the [Fantasy Land specification](https://g
 
 ![so fantastic](https://raw.githubusercontent.com/fantasyland/fantasy-land/master/logo.png)
 
-Todos:
+### Update 1.0.0
 
-1. Documentation!
-2. Expand on the "Etc" part -- Make other instances (bifunctor, comonad, foldable, traversable, etc).
-3. Monad Transformers?
+* Function names moved to the Fantasy Land specification. Code written for famine < 1.0.0 will not be supported any longer!
