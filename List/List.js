@@ -1,4 +1,7 @@
 // The List Monad
+var Errors = require('../Errors'),
+    TC = require('../TypeChecker');
+
 
 var List = function(vals){
 
@@ -16,9 +19,7 @@ var List = function(vals){
 }
 
 List.prototype.map = function(f){
-  if(typeof f !== 'function'){
-    throw new Error('Expected function but got ' + typeof f + ' in the first argument of List.map');
-  }
+  Errors.argError(!TC.isFunction(f), f, 'function', 'first', 'List.map');
   var ret = [];
   for(var i = 0; i < this.val.length; i++){
     ret.push(f(this.val[i]));
@@ -29,11 +30,14 @@ List.prototype.map = function(f){
 List.prototype.ap = function(list){
   // vals is a list of functions
   var ret = [];
+
+  Errors.argError(!(list instanceof List && list.type === 'List'), list, 'List', 'first', 'List.ap');
+
   for(var i = 0; i < this.val.length; i++){
     var cur = (this.val)[i];
-    if(typeof cur !== 'function'){
-      throw new Error('Expected function but got ' + typeof cur + ' in the ' + i + 'th index of vals in List.ap');
-    }
+
+    Errors.varError(!TC.isFunction(cur), 'List.val[' + i + ']', 'function', 'List.ap');
+    
     var curList = list.map(cur);
     ret = ret.concat(curList.val);
   }
@@ -41,16 +45,13 @@ List.prototype.ap = function(list){
 }
 
 List.prototype.chain = function(f){
-  if(typeof f !== 'function'){
-    throw new Error('Expected function but got ' + typeof f + ' in the first argument of List.chain');
-  }
+  Errors.argError(!TC.isFunction(f), f, 'function', 'first', 'List.chain');
+
   var lists = this.map(f).val,
       ret = [];
   for(var i = 0; i < lists.length; i++){
     var curList = lists[i];
-    if(!(curList.type === 'List' && curList instanceof List) ){
-      throw new Error('Expected List but got ' + typeof curList + ' in the ' + i + 'th index of vals in List.chain');
-    }
+    Errors.returnTypeError(!(curList instanceof List && curList.type === 'List'), curList, 'List', 'List.chain');
     ret = ret.concat(curList.val);
   }
   return new List(ret);
