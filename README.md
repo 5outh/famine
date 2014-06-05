@@ -25,7 +25,7 @@ Famine also exports some common Monoids and 2-Tuples.
 
 All data types lie in accordance with the Fantasy Land specification.
 
-![so fantastic]('./fantasy-land-logo.png');
+![so fantastic](fantasy-land-logo.png);
 
 Todos:
 
