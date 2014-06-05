@@ -1,6 +1,6 @@
 {
   "name": "famine",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Functors, Applicatives, Monads, Etc.",
   "main": "famine.js",
   "scripts": {
