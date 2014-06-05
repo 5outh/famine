@@ -16,55 +16,52 @@ var Writer = function(w, log, val){
   this.val = val;
   this.log = log;
   this.monoid = w;
-
-  this.runWriter = function(){
-    return new Tuple(this.val, this.log);
-  }
-
-  this.fmap = function(f){
-    if(typeof f !== 'function'){
-      throw new Error('Expected function but got ' + typeof f + ' in the first argument of Writer.fmap');
-    }
-    return new Writer(this.monoid, this.log, f(this.val));
-  }
-
-  // apply : Writer w (a -> b) -> Writer w a -> Writer w b
-  this.apply = function(writer){
-    if(typeof this.val !== 'function'){
-      throw new Error('Expected function but got ' + typeof (this.val) + ' in the value of Writer in Writer.apply'); 
-    }else if(!(writer instanceof Writer && writer.type === 'Writer')) {
-      throw new Error('Expected Writer but got ' + typeof writer + ' in the first argument of Writer.apply');
-    }
-
-    return writer.fmap(this.val);
-  }
-
-  this.bind = function(f){
-    if(typeof f !== 'function'){
-      throw new Error('Expected function but got ' + typeof f + ' in the first argument of Writer.bind'); 
-    }
-
-    var next = f(val);
-
-    if(!(next instanceof Writer && next.type === 'Writer')) {
-      throw new Error('Expected Writer but got ' + typeof next + ' in the variable next in Writer.bind');
-    }
-
-    return new Writer(this.monoid, this.monoid.mappend(this.log, next.log), next.val);
-  }
-
-  this.tell = function(phrase){
-    if(typeof phrase !== typeof this.monoid.mempty){
-      throw new Error('Expected ' + typeof (monoid.mempty) + ' but got ' + typeof phrase + ' in the first argument of Writer.tell');
-    }
-    return new Writer(this.monoid, this.monoid.mappend(this.log, phrase), this.val);
-  }
-
-  this.functor = true;
-  this.applicative = true;
-  this.monad = true;
   this.type = 'Writer';
 }
+
+Writer.prototype.runWriter = function(){
+  return new Tuple(this.val, this.log);
+}
+
+Writer.prototype.map = function(f){
+  if(typeof f !== 'function'){
+    throw new Error('Expected function but got ' + typeof f + ' in the first argument of Writer.map');
+  }
+  return new Writer(this.monoid, this.log, f(this.val));
+}
+
+// apply : Writer w (a -> b) -> Writer w a -> Writer w b
+Writer.prototype.ap = function(writer){
+  if(typeof this.val !== 'function'){
+    throw new Error('Expected function but got ' + typeof (this.val) + ' in the value of Writer in Writer.ap'); 
+  }else if(!(writer instanceof Writer && writer.type === 'Writer')) {
+    throw new Error('Expected Writer but got ' + typeof writer + ' in the first argument of Writer.ap');
+  }
+
+  return writer.fmap(this.val);
+}
+
+Writer.prototype.chain = function(f){
+  if(typeof f !== 'function'){
+    throw new Error('Expected function but got ' + typeof f + ' in the first argument of Writer.chain'); 
+  }
+
+  var next = f(this.val);
+
+  if(!(next instanceof Writer && next.type === 'Writer')) {
+    throw new Error('Expected Writer but got ' + typeof next + ' in the variable next in Writer.chain');
+  }
+
+  return new Writer(this.monoid, this.monoid.mappend(this.log, next.log), next.val);
+}
+
+Writer.prototype.tell = function(phrase){
+  if(typeof phrase !== typeof this.monoid.mempty){
+    throw new Error('Expected ' + typeof (monoid.mempty) + ' but got ' + typeof phrase + ' in the first argument of Writer.tell');
+  }
+  return new Writer(this.monoid, this.monoid.mappend(this.log, phrase), this.val);
+}
+
 
 Writer.listen = function(m){
   if(!(m instanceof Writer && m.type === 'Writer')) {
@@ -82,7 +79,7 @@ Writer.pass = function(m){
   return new Writer(next.monoid, next.fst.fst, (next.fst.snd)(next.snd));
 }
 
-Writer.pure = function(monoid, val){
+Writer.of = function(monoid, val){
   return new Writer(monoid, monoid.mempty, val);
 }
 
