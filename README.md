@@ -23,7 +23,7 @@ Famine currently exports "the usual suspects" as data types, each implementing F
 
 Famine also exports some common Monoids and 2-Tuples.
 
-All data types lie in accordance with the Fantasy Land specification.
+All data types lie in accordance with the [Fantasy Land specification](https://github.com/fantasyland/fantasy-land).
 
 ![so fantastic](fantasy-land-logo.png)
 
